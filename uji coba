@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rofi Ali Majid — Journalist / Writer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    :root {
+      --charcoal: #111514;
+      --charcoal-raised: #161c1b;
+      --charcoal-hover: #1b2422;
+      --ink: #efeee8;
+      --muted: #a7afaa;
+      --teal: #4d8d84;
+      --teal-bright: #8bbeb4;
+      --line: #2b3633;
+      --focus: #a3d9ce;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--charcoal); }
+
+    body {
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      color: var(--ink);
+      background: var(--charcoal);
+      font-family: "Source Sans 3", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .portfolio-shell {
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .serif { font-family: "Fraunces", serif; }
+
+    /* Site Header */
+    .site-header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 21, 20, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+    }
+
+    .site-header-inner {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .site-wordmark {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Fraunces", serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      letter-spacing: .015em;
+      line-height: 1.1;
+    }
+
+    .site-tagline {
+      margin: .35rem 0 0;
+      color: var(--teal-bright);
+      font-family: "Source Sans 3", sans-serif;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      line-height: 1.2;
+      text-transform: lowercase;
+    }
+
+    .archive-layout {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4.5rem;
+    }
+
+    /* Carousel Styling */
+    .carousel-section {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 0;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--charcoal-raised);
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 21 / 9;
+      min-height: 380px;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.65) brightness(.65) contrast(1.05);
+      transition: transform 0.8s ease;
+    }
+
+    .carousel-slide:hover .slide-bg {
+      transform: scale(1.02);
+      filter: saturate(.75) brightness(.72) contrast(1.05);
+    }
+
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(17,21,20,0.95) 0%, rgba(17,21,20,0.4) 50%, rgba(17,21,20,0.1) 100%);
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 10;
+      padding: 2.5rem;
+      max-width: 800px;
+    }
+
+    .slide-title {
+      font-family: "Fraunces", serif;
+      font-size: 2.1rem;
+      font-weight: 600;
+      line-height: 1.18;
+      color: var(--ink);
+      margin: 0.5rem 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-excerpt {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      background: rgba(17, 21, 20, 0.7);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .carousel-btn:hover {
+      background: rgba(23, 69, 64, 0.85);
+      border-color: var(--teal);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .carousel-btn.prev { left: 1.25rem; }
+    .carousel-btn.next { right: 1.25rem; }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 2rem;
+      z-index: 20;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .indicator-dot {
+      width: 28px;
+      height: 3px;
+      background: rgba(239, 238, 232, 0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s ease, width 0.25s ease;
+    }
+
+    .indicator-dot.active {
+      background: var(--teal-bright);
+      width: 40px;
+    }
+
+    /* Article Grid Layout */
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .article-card {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      background: var(--charcoal);
+      transition: background-color .22s ease;
+      text-decoration: none;
+    }
+
+    .article-card:hover { background: var(--charcoal-hover); }
+
+    .image-frame {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--charcoal-raised);
+    }
+
+    .article-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.62) brightness(.83) contrast(1.06);
+      transition: transform .42s ease, filter .42s ease;
+    }
+
+    .article-card:hover .article-image {
+      transform: scale(1.025);
+      filter: saturate(.72) brightness(.91) contrast(1.04);
+    }
+
+    .article-copy {
+      display: flex;
+      min-height: 12.5rem;
+      flex: 1;
+      flex-direction: column;
+      padding: 1.4rem 1.5rem 1.6rem;
+    }
+
+    .reading-time {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .article-title {
+      margin: .6rem 0 0;
+      color: var(--ink);
+      font-family: "Fraunces", serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+    }
+
+    .article-excerpt {
+      display: -webkit-box;
+      overflow: hidden;
+      margin: .8rem 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.55;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 860px) {
+      .carousel-container {
+        aspect-ratio: 16 / 10;
+        min-height: 320px;
+      }
+      .slide-content { padding: 1.5rem; }
+      .slide-title { font-size: 1.6rem; }
+      .carousel-btn { width: 36px; height: 36px; }
+    }
+
+    @media (max-width: 700px) {
+      .carousel-section { padding: 1.25rem 1rem 0; }
+      .archive-layout { padding: 1.75rem 1rem 3rem; }
+      .article-grid { grid-template-columns: 1fr; }
+      .article-copy { min-height: 11rem; padding: 1.25rem; }
+      .slide-excerpt { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portfolio-shell">
+    <header class="site-header">
+      <div class="site-header-inner">
+        <h1 class="site-wordmark">Rofi Ali Majid</h1>
+        <p class="site-tagline">writing for meaning</p>
+      </div>
+    </header>
+
+    <main>
+      <!-- Featured Carousel Section -->
+      <section class="carousel-section" aria-label="Sorotan Tulisan">
+        <div class="carousel-container" id="carouselContainer">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+              <img src="https://images.pexels.com/photos/30247330/pexels-photo-30247330.jpeg" alt="Garis batas dan peta dunia tua" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">8 menit baca</span>
+                <h2 class="slide-title">Cara Kita Membayangkan Dunia</h2>
+                <p class="slide-excerpt">Catatan editorial tentang ambisi, kekuasaan, dan detail kecil yang tersembunyi di balik garis batas.</p>
+                <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+              <img src="https://images.pexels.com/photos/2928587/pexels-photo-2928587.jpeg" alt="Observatorium malam hari" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">7 menit baca</span>
+                <h2 class="slide-title">Mendengarkan Cahaya yang Sangat Tua</h2>
+                <p class="slide-excerpt">Sebuah refleksi tentang observatorium, astrofisika, dan pesan samar yang melintasi ruang serta waktu.</p>
+                <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+              <img src="https://images.pexels.com/photos/36572764/pexels-photo-36572764.jpeg" alt="Stasiun riset lanskap ekstrem" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">11 menit baca</span>
+                <h2 class="slide-title">Catatan dari Lanskap yang Menuntut Kesabaran</h2>
+                <p class="slide-excerpt">Catatan etnografi tentang riset lapangan, skala alam, dan perhatian penuh yang dibangun secara perlahan.</p>
+                <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carousel Manual Navigation Buttons -->
+          <button class="carousel-btn prev" id="prevBtn" aria-label="Slide sebelumnya">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="carousel-btn next" id="nextBtn" aria-label="Slide berikutnya">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <!-- Carousel Indicators -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <span class="indicator-dot active" data-slide="0"></span>
+            <span class="indicator-dot" data-slide="1"></span>
+            <span class="indicator-dot" data-slide="2"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Catalogue Section -->
+      <section class="archive-layout" aria-label="Katalog Tulisan">
+        <div id="article-grid" class="article-grid">
+          
+          <!-- Article 1 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/30247330/pexels-photo-30247330.jpeg" alt="Peta tua dunia">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">8 menit baca</span>
+              <h2 class="article-title">Cara Kita Membayangkan Dunia</h2>
+              <p class="article-excerpt">Catatan editorial tentang ambisi, kekuasaan, dan detail kecil yang tersembunyi di balik garis batas.</p>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/38019365/pexels-photo-38019365.jpeg" alt="Koleksi buku arsip lama">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">6 menit baca</span>
+              <h2 class="article-title">Di Dalam Sunyi Sebuah Arsip</h2>
+              <p class="article-excerpt">Bagaimana buku, catatan, dan dokumen lama menyimpan jejak pertanyaan yang belum selesai.</p>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/2928587/pexels-photo-2928587.jpeg" alt="Observatorium bintang">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">7 menit baca</span>
+              <h2 class="article-title">Mendengarkan Cahaya yang Sangat Tua</h2>
+              <p class="article-excerpt">Sebuah fitur tentang observatorium dan pesan samar yang melintasi ruang serta waktu.</p>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/10182506/pexels-photo-10182506.jpeg" alt="Eksperimen di laboratorium">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">6 menit baca</span>
+              <h2 class="article-title">Eksperimen yang Hidup di Antara Catatan</h2>
+              <p class="article-excerpt">Tentang keraguan, ketelitian, dan ruang tak pasti yang sering membuat hasil ilmiah berarti.</p>
+            </div>
+          </article>
+
+          <!-- Article 5 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/30694295/pexels-photo-30694295.jpeg" alt="Mesin teknologi lama">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">9 menit baca</span>
+              <h2 class="article-title">Mesin Lama, Pertanyaan Baru</h2>
+              <p class="article-excerpt">Sebuah tulisan tentang teknologi sebagai benda, ingatan, dan cara baru untuk melihat kerja manusia.</p>
+            </div>
+          </article>
+
+          <!-- Article 6 -->
+          <article class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://images.pexels.com/photos/36572764/pexels-photo-36572764.jpeg" alt="Lanskap riset ekstrem">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">11 menit baca</span>
+              <h2 class="article-title">Catatan dari Lanskap yang Menuntut Kesabaran</h2>
+              <p class="article-excerpt">Catatan editorial tentang riset lapangan, skala alam, dan perhatian yang dibangun perlahan.</p>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const track = document.getElementById('carouselTrack');
+      const container = document.getElementById('carouselContainer');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dots = document.querySelectorAll('.indicator-dot');
+      const slides = document.querySelectorAll('.carousel-slide');
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      const slideInterval = 2000; // 2 Seconds
+      let timer = null;
+
+      function updateCarousel(index) {
+        currentIndex = (index + totalSlides) % totalSlides;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        dots.forEach((dot, idx) => {
+          if (idx === currentIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+
+      function startAutoSlide() {
+        stopAutoSlide();
+        timer = setInterval(() => {
+          updateCarousel(currentIndex + 1);
+        }, slideInterval);
+      }
+
+      function stopAutoSlide() {
+        if (timer) clearInterval(timer);
+      }
+
+      // Event Listeners for Manual Control
+      nextBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex + 1);
+        startAutoSlide();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex - 1);
+        startAutoSlide();
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          const slideTo = parseInt(e.target.getAttribute('data-slide'));
+          updateCarousel(slideTo);
+          startAutoSlide();
+        });
+      });
+
+      // Pause auto-sliding on hover
+      container.addEventListener('mouseenter', stopAutoSlide);
+      container.addEventListener('mouseleave', startAutoSlide);
+
+      // Start automatic sliding
+      startAutoSlide();
+    });
+  </script>
+</body>
+</html>
