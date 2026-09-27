@@ -1,1 +1,570 @@
-<!DOCTYPE html> <html lang="id"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Rofi Ali Majid — Journalist / Writer</title> <!-- Google Fonts --> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet"> <style> :root { --bg: #171918; --bg-soft: #202321; --card: #222624; --card-hover: #292d2b; --text: #f2f1ec; --muted: #a9ada8; --line: #343936; --accent: #6fc3b5; --accent-soft: rgba(111, 195, 181, 0.12); --white: #ffffff; } * { box-sizing: border-box; } html { scroll-behavior: smooth; } body { margin: 0; background: var(--bg); color: var(--text); font-family: "Source Sans 3", sans-serif; line-height: 1.6; } a { color: inherit; text-decoration: none; } .portfolio { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 70px 0 90px; } /* ========================= HEADER ========================= */ .hero { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: end; padding-bottom: 60px; border-bottom: 1px solid var(--line); } .eyebrow { margin: 0 0 14px; color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; } .hero h1 { margin: 0; font-family: "Fraunces", serif; font-size: clamp(48px, 7vw, 88px); font-weight: 600; line-height: 0.98; letter-spacing: -0.045em; } .hero-description { max-width: 420px; margin: 0 0 5px auto; color: var(--muted); font-size: 18px; line-height: 1.65; } /* ========================= SECTION ========================= */ .section { padding-top: 60px; } .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 25px; } .section-heading h2 { margin: 0; font-family: "Fraunces", serif; font-size: 34px; font-weight: 600; letter-spacing: -0.025em; } .section-heading span { color: var(--muted); font-size: 14px; } /* ========================= FEATURE CAROUSEL ========================= */ .carousel-wrapper { position: relative; } .carousel { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 32px) / 3); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 8px; } .carousel::-webkit-scrollbar { display: none; } .feature-card { position: relative; min-height: 420px; overflow: hidden; border-radius: 14px; background: var(--card); scroll-snap-align: start; border: 1px solid var(--line); transition: transform 0.25s ease, border-color 0.25s ease; } .feature-card:hover { transform: translateY(-4px); border-color: #4b5551; } .feature-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; } .feature-overlay { position: absolute; inset: 0; background: linear-gradient( to bottom, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.92) 100% ); } .feature-content { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 28px; } .feature-label { display: inline-block; margin-bottom: 10px; padding: 5px 9px; border: 1px solid rgba(111, 195, 181, 0.45); border-radius: 4px; background: rgba(20, 30, 28, 0.7); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; } .feature-content h3 { margin: 0; font-family: "Fraunces", serif; font-size: 27px; font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; } .feature-content p { margin: 10px 0 0; color: #d0d3cf; font-size: 15px; line-height: 1.5; } .carousel-controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; } .carousel-btn { width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; font-size: 20px; transition: 0.2s ease; } .carousel-btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); } /* ========================= ARTICLE GRID ========================= */ .article-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; } .article-card { display: grid; grid-template-columns: 220px 1fr; min-height: 190px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--card); transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease; } .article-card:hover { transform: translateY(-3px); background: var(--card-hover); border-color: #4b5551; } .article-image { width: 100%; height: 100%; min-height: 190px; object-fit: cover; } .article-content { display: flex; flex-direction: column; justify-content: center; padding: 24px; } .article-category { margin-bottom: 8px; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; } .article-content h3 { margin: 0; font-family: "Fraunces", serif; font-size: 22px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; } .article-content p { margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; } .read-more { display: inline-flex; align-items: center; gap: 7px; margin-top: 15px; color: var(--accent); font-size: 13px; font-weight: 600; } .read-more span { transition: transform 0.2s ease; } .article-card:hover .read-more span { transform: translateX(4px); } /* ========================= FOOTER ========================= */ .footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-top: 70px; padding-top: 25px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; } .footer strong { color: var(--text); font-weight: 600; } /* ========================= RESPONSIVE TABLET ========================= */ @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 25px; } .hero-description { margin-left: 0; max-width: 600px; } .carousel { grid-auto-columns: calc((100% - 16px) / 2); } .article-grid { grid-template-columns: 1fr; } } /* ========================= RESPONSIVE MOBILE ========================= */ @media (max-width: 620px) { .portfolio { width: min(100% - 28px, 1180px); padding-top: 45px; padding-bottom: 60px; } .hero { padding-bottom: 42px; } .hero h1 { font-size: clamp(44px, 15vw, 68px); } .hero-description { font-size: 16px; } .section { padding-top: 45px; } .section-heading { display: block; } .section-heading h2 { font-size: 29px; } .section-heading span { display: block; margin-top: 5px; } .carousel { grid-auto-columns: 88%; gap: 13px; } .feature-card { min-height: 410px; } .feature-content { padding: 22px; } .feature-content h3 { font-size: 25px; } .article-grid { gap: 14px; } .article-card { grid-template-columns: 115px 1fr; min-height: 145px; } .article-image { min-height: 145px; } .article-content { padding: 17px; } .article-content h3 { font-size: 18px; } .article-content p { display: none; } .article-category { margin-bottom: 6px; font-size: 10px; } .read-more { margin-top: 10px; font-size: 12px; } .footer { display: block; } .footer > * + * { margin-top: 7px; } } </style> </head> <body> <main class="portfolio"> <!-- ========================= HEADER ========================= --> <header class="hero"> <div> <p class="eyebrow">Journalist / Writer</p> <h1> Rofi Ali<br> Majid </h1> </div> <p class="hero-description"> Jurnalis yang menulis tentang sejarah, sains, budaya, dan isu-isu publik dengan pendekatan berbasis riset. </p> </header> <!-- ========================= FEATURED ARTICLES ========================= --> <section class="section"> <div class="section-heading"> <h2>Selected Work</h2> <span>Featured articles</span> </div> <div class="carousel-wrapper"> <div class="carousel" id="featuredCarousel"> <!-- SAMSI --> <a class="feature-card" href="https://tirto.id/gebrakan-berani-menkeu-samsi-sastrawidagda-yang-menjabat-38-hari-hC4l" target="_blank" rel="noopener noreferrer" > <img class="feature-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/24/header-mozaik---samsi-sastrawidagda---menkeu-ri-pertama---fad_ratio-16x9.jpg" alt="Samsi Sastrawidagda" loading="lazy" > <div class="feature-overlay"></div> <div class="feature-content"> <span class="feature-label">Sejarah</span> <h3> Gebrakan Berani Menkeu Samsi Sastrawidagda yang Menjabat 39 Hari </h3> <p> Kisah Menteri Keuangan pertama Republik Indonesia dan operasi pengamanan dana perjuangan. </p> </div> </a> <!-- KRAKATAU --> <a class="feature-card" href="https://tirto.id/membaca-letusan-dan-tsunami-krakatau-1883-dari-ingatan-korban-hCQL" target="_blank" rel="noopener noreferrer" > <img class="feature-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/14/letusan-krakatau-1883--3_ratio-16x9.jpg" alt="Letusan Krakatau 1883" loading="lazy" > <div class="feature-overlay"></div> <div class="feature-content"> <span class="feature-label">Sejarah</span> <h3> Membaca Letusan dan Tsunami Krakatau 1883 dari Ingatan Korban </h3> <p> Menelusuri kesaksian korban dan jejak bencana Krakatau pada 1883. </p> </div> </a> <!-- GIGANTOPITHECUS --> <a class="feature-card" href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW" target="_blank" rel="noopener noreferrer" > <img class="feature-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg" alt="Gigantopithecus" loading="lazy" > <div class="feature-overlay"></div> <div class="feature-content"> <span class="feature-label">Sains</span> <h3> Gigantopithecus: King Kong Purba dari Jawa </h3> <p> Menelusuri jejak kera raksasa yang pernah hidup di Asia dan kaitannya dengan Jawa. </p> </div> </a> </div> <!-- CAROUSEL BUTTONS --> <div class="carousel-controls"> <button class="carousel-btn" id="prevBtn" aria-label="Artikel sebelumnya" type="button" > ← </button> <button class="carousel-btn" id="nextBtn" aria-label="Artikel berikutnya" type="button" > → </button> </div> </div> </section> <!-- ========================= ALL ARTICLES ========================= --> <section class="section"> <div class="section-heading"> <h2>Articles</h2> <span>Selected publications on Tirto.id</span> </div> <div class="article-grid"> <!-- 01 SAMSI --> <a class="article-card" href="https://tirto.id/gebrakan-berani-menkeu-samsi-sastrawidagda-yang-menjabat-38-hari-hC4l" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/24/header-mozaik---samsi-sastrawidagda---menkeu-ri-pertama---fad_ratio-16x9.jpg" alt="Samsi Sastrawidagda" loading="lazy" > <div class="article-content"> <div class="article-category"> Sejarah </div> <h3> Gebrakan Berani Menkeu Samsi Sastrawidagda yang Menjabat 39 Hari </h3> <p> Kisah Menteri Keuangan pertama Republik Indonesia pada awal masa kemerdekaan. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 02 KRAKATAU --> <a class="article-card" href="https://tirto.id/membaca-letusan-dan-tsunami-krakatau-1883-dari-ingatan-korban-hCQL" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/14/letusan-krakatau-1883--3_ratio-16x9.jpg" alt="Letusan Krakatau 1883" loading="lazy" > <div class="article-content"> <div class="article-category"> Sejarah </div> <h3> Membaca Letusan dan Tsunami Krakatau 1883 dari Ingatan Korban </h3> <p> Kesaksian korban dan rekonstruksi bencana Krakatau pada 1883. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 03 ARCA PALSU --> <a class="article-card" href="https://tirto.id/ketika-arca-palsu-dari-solo-gemparkan-belanda-hwDT" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/05/24/header-mozaik-arca-palsu--fad_01_ratio-16x9.jpg" alt="Arca palsu dari Solo" loading="lazy" > <div class="article-content"> <div class="article-category"> Sejarah </div> <h3> Ketika Arca Palsu dari Solo Gemparkan Belanda </h3> <p> Kisah di balik artefak palsu dari Solo yang menghebohkan dunia kolonial. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 04 BATU --> <a class="article-card" href="https://tirto.id/di-balik-tren-hobi-memelihara-batu-hBjS" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/08/18/ilustrasi-hobi-memelihara-batu_01_ratio-16x9.jpg" alt="Hobi memelihara batu" loading="lazy" > <div class="article-content"> <div class="article-category"> Budaya </div> <h3> Di Balik Tren Hobi Memelihara Batu </h3> <p> Membaca fenomena hobi mengoleksi dan merawat batu dalam kehidupan sehari-hari. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 05 DRACIN --> <a class="article-card" href="https://tirto.id/nestapa-di-balik-mikro-dracin-penulis-diplagiat-aktor-dipecat-hzZP" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/07/21/zhang-xiaoley_ratio-16x9.jpg" alt="Zhang Xiaoley" loading="lazy" > <div class="article-content"> <div class="article-category"> Budaya </div> <h3> Nestapa di Balik Mikro Dracin: Penulis Diplagiat, Aktor Dipecat </h3> <p> Membahas persoalan plagiarisme dalam industri drama China. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 06 NASA --> <a class="article-card" href="https://tirto.id/teleskop-mutakhir-nasa-ambisi-temukan-100-ribu-planet-baru-hB9L" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/04/ksc-20260626-ph-ser01_0007large_ratio-16x9.jpg" alt="Teleskop NASA" loading="lazy" > <div class="article-content"> <div class="article-category"> Sains </div> <h3> Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru </h3> <p> Tentang teleskop baru NASA dan pencarian planet di luar tata surya. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> <!-- 07 GIGANTOPITHECUS --> <a class="article-card" href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW" target="_blank" rel="noopener noreferrer" > <img class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg" alt="Gigantopithecus" loading="lazy" > <div class="article-content"> <div class="article-category"> Sains </div> <h3> Gigantopithecus: King Kong Purba dari Jawa </h3> <p> Menelusuri kisah Gigantopithecus dan jejak kera raksasa di Asia. </p> <div class="read-more"> Baca artikel <span>→</span> </div> </div> </a> </div> </section> <!-- ========================= FOOTER ========================= --> <footer class="footer"> <div> <strong>Rofi Ali Majid</strong> — Journalist / Writer </div> <div> Selected publications on Tirto.id </div> </footer> </main> <!-- ========================= CAROUSEL JAVASCRIPT ========================= --> <script> const carousel = document.getElementById("featuredCarousel"); const nextBtn = document.getElementById("nextBtn"); const prevBtn = document.getElementById("prevBtn"); function getScrollAmount() { const card = carousel.querySelector(".feature-card"); if (!card) return 0; const gap = 16; return card.offsetWidth + gap; } nextBtn.addEventListener("click", () => { carousel.scrollBy({ left: getScrollAmount(), behavior: "smooth" }); }); prevBtn.addEventListener("click", () => { carousel.scrollBy({ left: -getScrollAmount(), behavior: "smooth" }); }); </script> </body> </html>
+```html
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rofi Ali Majid — Journalist / Writer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    :root {
+      --charcoal: #111514;
+      --charcoal-raised: #161c1b;
+      --charcoal-hover: #1b2422;
+      --ink: #efeee8;
+      --muted: #a7afaa;
+      --teal: #4d8d84;
+      --teal-bright: #8bbeb4;
+      --line: #2b3633;
+      --focus: #a3d9ce;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--charcoal); }
+
+    body {
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      color: var(--ink);
+      background: var(--charcoal);
+      font-family: "Source Sans 3", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .portfolio-shell {
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .serif { font-family: "Fraunces", serif; }
+
+    /* Site Header */
+    .site-header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 21, 20, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+    }
+
+    .site-header-inner {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .site-wordmark {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Fraunces", serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      letter-spacing: .015em;
+      line-height: 1.1;
+    }
+
+    .site-tagline {
+      margin: .35rem 0 0;
+      color: var(--teal-bright);
+      font-family: "Source Sans 3", sans-serif;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      line-height: 1.2;
+      text-transform: lowercase;
+    }
+
+    .archive-layout {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4.5rem;
+    }
+
+    /* Carousel Styling */
+    .carousel-section {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 0;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--charcoal-raised);
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 21 / 9;
+      min-height: 380px;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.65) brightness(.65) contrast(1.05);
+      transition: transform 0.8s ease;
+    }
+
+    .carousel-slide:hover .slide-bg {
+      transform: scale(1.02);
+      filter: saturate(.75) brightness(.72) contrast(1.05);
+    }
+
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(17,21,20,0.95) 0%, rgba(17,21,20,0.4) 50%, rgba(17,21,20,0.1) 100%);
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 10;
+      padding: 2.5rem;
+      max-width: 800px;
+    }
+
+    .slide-title {
+      font-family: "Fraunces", serif;
+      font-size: 2.1rem;
+      font-weight: 600;
+      line-height: 1.18;
+      color: var(--ink);
+      margin: 0.5rem 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-excerpt {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      background: rgba(17, 21, 20, 0.7);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .carousel-btn:hover {
+      background: rgba(23, 69, 64, 0.85);
+      border-color: var(--teal);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .carousel-btn.prev { left: 1.25rem; }
+    .carousel-btn.next { right: 1.25rem; }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 2rem;
+      z-index: 20;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .indicator-dot {
+      width: 28px;
+      height: 3px;
+      background: rgba(239, 238, 232, 0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s ease, width 0.25s ease;
+    }
+
+    .indicator-dot.active {
+      background: var(--teal-bright);
+      width: 40px;
+    }
+
+    /* Article Grid Layout */
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .article-card {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      background: var(--charcoal);
+      transition: background-color .22s ease;
+      text-decoration: none;
+    }
+
+    .article-card:hover { background: var(--charcoal-hover); }
+
+    .image-frame {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--charcoal-raised);
+    }
+
+    .article-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.62) brightness(.83) contrast(1.06);
+      transition: transform .42s ease, filter .42s ease;
+    }
+
+    .article-card:hover .article-image {
+      transform: scale(1.025);
+      filter: saturate(.72) brightness(.91) contrast(1.04);
+    }
+
+    .article-copy {
+      display: flex;
+      min-height: 12.5rem;
+      flex: 1;
+      flex-direction: column;
+      padding: 1.4rem 1.5rem 1.6rem;
+    }
+
+    .reading-time {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .article-title {
+      margin: .6rem 0 0;
+      color: var(--ink);
+      font-family: "Fraunces", serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+    }
+
+    .article-excerpt {
+      display: -webkit-box;
+      overflow: hidden;
+      margin: .8rem 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.55;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 860px) {
+      .carousel-container {
+        aspect-ratio: 16 / 10;
+        min-height: 320px;
+      }
+      .slide-content { padding: 1.5rem; }
+      .slide-title { font-size: 1.6rem; }
+      .carousel-btn { width: 36px; height: 36px; }
+    }
+
+    @media (max-width: 700px) {
+      .carousel-section { padding: 1.25rem 1rem 0; }
+      .archive-layout { padding: 1.75rem 1rem 3rem; }
+      .article-grid { grid-template-columns: 1fr; }
+      .article-copy { min-height: 11rem; padding: 1.25rem; }
+      .slide-excerpt { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portfolio-shell">
+    <header class="site-header">
+      <div class="site-header-inner">
+        <h1 class="site-wordmark">Rofi Ali Majid</h1>
+        <p class="site-tagline">writing for meaning</p>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- Featured Carousel Section -->
+      <section class="carousel-section" aria-label="Sorotan Tulisan">
+        <div class="carousel-container" id="carouselContainer">
+          <div class="carousel-track" id="carouselTrack">
+
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+              <img src="https://mmc.tirto.id/image/otf/1240x0/2026/09/24/header-mozaik---samsi-sastrawidagda---menkeu-ri-pertama---fad_ratio-16x9.jpg" alt="Samsi Sastrawidagda" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">Tirto.id</span>
+                <h2 class="slide-title">Gebrakan Berani Menkeu Samsi Sastrawidagda yang Menjabat 38 Hari</h2>
+                <p class="slide-excerpt">Kisah Samsi Sastrawidagda, Menteri Keuangan pertama Republik Indonesia.</p>
+                <a href="https://tirto.id/gebrakan-berani-menkeu-samsi-sastrawidagda-yang-menjabat-38-hari-hC4l" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+              <img src="https://mmc.tirto.id/image/otf/1240x0/2026/09/14/letusan-krakatau-1883--3_ratio-16x9.jpg" alt="Letusan Krakatau 1883" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">Tirto.id</span>
+                <h2 class="slide-title">Membaca Letusan dan Tsunami Krakatau 1883 dari Ingatan Korban</h2>
+                <p class="slide-excerpt">Menelusuri letusan dan tsunami Krakatau 1883 melalui ingatan para korban.</p>
+                <a href="https://tirto.id/membaca-letusan-dan-tsunami-krakatau-1883-dari-ingatan-korban-hCQL" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+              <img src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg" alt="Gigantopithecus" class="slide-bg">
+              <div class="slide-overlay"></div>
+              <div class="slide-content">
+                <span class="reading-time">Tirto.id</span>
+                <h2 class="slide-title">Gigantopithecus: King Kong Purba Jawa, Kera Terbesar di Bumi</h2>
+                <p class="slide-excerpt">Menelusuri jejak Gigantopithecus, kera raksasa yang pernah hidup di Asia.</p>
+                <a href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8bbeb4] hover:text-[#dff4ee] transition-colors">
+                  Baca Selengkapnya 
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Carousel Manual Navigation Buttons -->
+          <button class="carousel-btn prev" id="prevBtn" aria-label="Slide sebelumnya">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="carousel-btn next" id="nextBtn" aria-label="Slide berikutnya">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <!-- Carousel Indicators -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <span class="indicator-dot active" data-slide="0"></span>
+            <span class="indicator-dot" data-slide="1"></span>
+            <span class="indicator-dot" data-slide="2"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Catalogue Section -->
+      <section class="archive-layout" aria-label="Katalog Tulisan">
+        <div id="article-grid" class="article-grid">
+          
+          <!-- Article 1 -->
+          <a href="https://tirto.id/gebrakan-berani-menkeu-samsi-sastrawidagda-yang-menjabat-38-hari-hC4l" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/24/header-mozaik---samsi-sastrawidagda---menkeu-ri-pertama---fad_ratio-16x9.jpg" alt="Samsi Sastrawidagda">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Gebrakan Berani Menkeu Samsi Sastrawidagda yang Menjabat 38 Hari</h2>
+              <p class="article-excerpt">Kisah Samsi Sastrawidagda, Menteri Keuangan pertama Republik Indonesia.</p>
+            </div>
+          </a>
+
+          <!-- Article 2 -->
+          <a href="https://tirto.id/membaca-letusan-dan-tsunami-krakatau-1883-dari-ingatan-korban-hCQL" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/14/letusan-krakatau-1883--3_ratio-16x9.jpg" alt="Letusan Krakatau 1883">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Membaca Letusan dan Tsunami Krakatau 1883 dari Ingatan Korban</h2>
+              <p class="article-excerpt">Menelusuri letusan dan tsunami Krakatau 1883 melalui ingatan para korban.</p>
+            </div>
+          </a>
+
+          <!-- Article 3 -->
+          <a href="https://tirto.id/ketika-arca-palsu-dari-solo-gemparkan-belanda-hwDT" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/05/24/header-mozaik-arca-palsu--fad_01_ratio-16x9.jpg" alt="Arca palsu dari Solo">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Ketika Arca Palsu dari Solo Gemparkan Belanda</h2>
+              <p class="article-excerpt">Kisah arca palsu dari Solo yang sempat menggemparkan Belanda.</p>
+            </div>
+          </a>
+
+          <!-- Article 4 -->
+          <a href="https://tirto.id/di-balik-tren-hobi-memelihara-batu-hBjS" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/08/18/ilustrasi-hobi-memelihara-batu_01_ratio-16x9.jpg" alt="Hobi memelihara batu">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Di Balik Tren Hobi Memelihara Batu</h2>
+              <p class="article-excerpt">Menelusuri tren hobi memelihara batu dan alasan di baliknya.</p>
+            </div>
+          </a>
+
+          <!-- Article 5 -->
+          <a href="https://tirto.id/nestapa-di-balik-mikro-dracin-penulis-diplagiat-aktor-dipecat-hzZP" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/07/21/zhang-xiaoley_ratio-16x9.jpg" alt="Zhang Xiaoley">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Nestapa di Balik Mikro Dracin: Penulis Diplagiat, Aktor Dipecat</h2>
+              <p class="article-excerpt">Membahas kasus plagiarisme penulis dalam industri drama China.</p>
+            </div>
+          </a>
+
+          <!-- Article 6 -->
+          <a href="https://tirto.id/teleskop-mutakhir-nasa-ambisi-temukan-100-ribu-planet-baru-hB9L" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/04/ksc-20260626-ph-ser01_0007large_ratio-16x9.jpg" alt="Teleskop mutakhir NASA">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru</h2>
+              <p class="article-excerpt">Membahas teleskop mutakhir NASA dan ambisi menemukan planet baru.</p>
+            </div>
+          </a>
+
+          <!-- Article 7 -->
+          <a href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="image-frame">
+              <img loading="lazy" class="article-image" src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg" alt="Gigantopithecus">
+            </div>
+            <div class="article-copy">
+              <span class="reading-time">Tirto.id</span>
+              <h2 class="article-title">Gigantopithecus: King Kong Purba Jawa, Kera Terbesar di Bumi</h2>
+              <p class="article-excerpt">Menelusuri jejak Gigantopithecus, kera raksasa yang pernah hidup di Asia.</p>
+            </div>
+          </a>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const track = document.getElementById('carouselTrack');
+      const container = document.getElementById('carouselContainer');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dots = document.querySelectorAll('.indicator-dot');
+      const slides = document.querySelectorAll('.carousel-slide');
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      const slideInterval = 2000; // 2 Seconds
+      let timer = null;
+
+      function updateCarousel(index) {
+        currentIndex = (index + totalSlides) % totalSlides;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        dots.forEach((dot, idx) => {
+          if (idx === currentIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+
+      function startAutoSlide() {
+        stopAutoSlide();
+        timer = setInterval(() => {
+          updateCarousel(currentIndex + 1);
+        }, slideInterval);
+      }
+
+      function stopAutoSlide() {
+        if (timer) clearInterval(timer);
+      }
+
+      // Event Listeners for Manual Control
+      nextBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex + 1);
+        startAutoSlide();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex - 1);
+        startAutoSlide();
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          const slideTo = parseInt(e.target.getAttribute('data-slide'));
+          updateCarousel(slideTo);
+          startAutoSlide();
+        });
+      });
+
+      // Pause auto-sliding on hover
+      container.addEventListener('mouseenter', stopAutoSlide);
+      container.addEventListener('mouseleave', startAutoSlide);
+
+      // Start automatic sliding
+      startAutoSlide();
+    });
+  </script>
+</body>
+</html>
+```
