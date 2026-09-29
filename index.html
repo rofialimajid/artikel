@@ -41,6 +41,9 @@
 
       --radius-card: 8px;
       --radius-large: 12px;
+
+      --header-height: 82px;
+      --archive-gap: 12px;
     }
 
     *,
@@ -621,8 +624,51 @@
        05. ARCHIVE HEADER
     ========================================= */
 
+    /*
+      ARCHIVE SECTION
+
+      Berbeda dari versi grid sebelumnya:
+      section sekarang menjadi ruang vertical scroll
+      untuk menggerakkan katalog secara horizontal.
+    */
+
     .archive-section {
-      padding-bottom: clamp(80px, 11vw, 140px);
+      position: relative;
+
+      width: 100%;
+
+      /*
+        Tinggi section dihitung otomatis oleh JavaScript.
+      */
+      padding-bottom: 0;
+    }
+
+    /*
+      Seluruh area ini tetap berada di tempat ketika
+      pengguna scroll ke bawah.
+    */
+
+    .archive-pin {
+      position: -webkit-sticky;
+      position: sticky;
+
+      top: var(--header-height);
+
+      width: 100%;
+
+      height: calc(100vh - var(--header-height));
+      height: calc(100svh - var(--header-height));
+
+      display: flex;
+      flex-direction: column;
+
+      overflow: hidden;
+
+      background: var(--charcoal);
+    }
+
+    .archive-heading-wrap {
+      flex: 0 0 auto;
     }
 
     .section-heading {
@@ -631,7 +677,8 @@
       justify-content: space-between;
       gap: 25px;
 
-      margin-bottom: 28px;
+      padding-top: 0;
+      padding-bottom: 28px;
     }
 
     .section-title {
@@ -656,14 +703,65 @@
 
 
     /* =========================================
-       06. ARCHIVE BENTO CARDS
+       06. ARCHIVE HORIZONTAL TRACK
     ========================================= */
 
-    .archive-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+    /*
+      Ini adalah jendela katalog.
+
+      Tidak ada native horizontal scrolling.
+      overflow-x hidden sengaja dipertahankan agar
+      swipe horizontal di HP tidak mengambil alih
+      interaksi vertical scroll.
+    */
+
+    .archive-viewport {
+      position: relative;
+
+      width: 100%;
+
+      flex: 1 1 auto;
+      min-height: 0;
+
+      overflow: hidden;
     }
+
+    /*
+      Semua kartu berada dalam satu baris.
+
+      Track inilah yang digeser menggunakan
+      translate3d(X, 0, 0).
+    */
+
+    .archive-track {
+      display: flex;
+      align-items: stretch;
+
+      width: max-content;
+      height: 100%;
+
+      gap: var(--archive-gap);
+
+      padding-left: max(
+        var(--page-padding),
+        calc((100vw - var(--page-width)) / 2)
+      );
+
+      padding-right: max(
+        var(--page-padding),
+        calc((100vw - var(--page-width)) / 2)
+      );
+
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
+
+      will-change: transform;
+    }
+
+
+    /* =========================================
+       ARCHIVE CARDS
+    ========================================= */
 
     .archive-card {
       --rx: 0deg;
@@ -672,7 +770,12 @@
 
       position: relative;
       display: flex;
+
+      flex: 0 0 390px;
+
       min-width: 0;
+      height: 100%;
+
       flex-direction: column;
       overflow: hidden;
 
@@ -708,7 +811,11 @@
     .archive-image-frame {
       position: relative;
       overflow: hidden;
+
       aspect-ratio: 16 / 10;
+
+      flex: 0 0 auto;
+
       background: var(--charcoal);
     }
 
@@ -717,9 +824,11 @@
       height: 100%;
 
       object-fit: cover;
+
       filter: saturate(.72) brightness(.83) contrast(1.04);
 
       transform: scale(1.01);
+
       transition:
         transform .7s var(--ease-out),
         filter .5s ease;
@@ -845,6 +954,40 @@
 
 
     /* =========================================
+       ARCHIVE REVEAL FIX
+    ========================================= */
+
+    /*
+      Reveal default memakai translateY().
+      Itu bisa bentrok dengan transform 3D pada
+      archive-card.
+
+      Karena itu archive-card hanya menggunakan
+      opacity untuk reveal.
+    */
+
+    .js-ready .archive-card.reveal {
+      opacity: 0;
+
+      transform:
+        perspective(1100px)
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        translateY(var(--lift));
+    }
+
+    .js-ready .archive-card.reveal.is-visible {
+      opacity: 1;
+
+      transform:
+        perspective(1100px)
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        translateY(var(--lift));
+    }
+
+
+    /* =========================================
        07. FOOTER
     ========================================= */
 
@@ -950,6 +1093,7 @@
     }
 
     @media (max-width: 900px) {
+
       .intro-top {
         gap: 25px;
       }
@@ -987,8 +1131,23 @@
         font-size: .84rem;
       }
 
-      .archive-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      /*
+        Tablet:
+        kartu menjadi lebih lebar agar tetap terasa
+        seperti katalog horizontal.
+      */
+
+      .archive-card {
+        flex-basis: min(58vw, 390px);
+      }
+
+      .section-heading {
+        margin-bottom: 0;
+      }
+
+      .archive-copy {
+        padding: 20px;
       }
 
       .archive-title {
@@ -1002,6 +1161,7 @@
     ========================================= */
 
     @media (max-width: 600px) {
+
       :root {
         --page-padding: 19px;
       }
@@ -1120,9 +1280,25 @@
         margin-top: 18px;
       }
 
+
+      /* =====================================
+         MOBILE ARCHIVE
+      ===================================== */
+
+      /*
+        Heading tetap berada di dalam sticky area.
+      */
+
+      .archive-pin {
+        height: calc(100vh - var(--header-height));
+        height: calc(100svh - var(--header-height));
+      }
+
       .section-heading {
         display: block;
-        margin-bottom: 22px;
+
+        padding-top: 0;
+        padding-bottom: 21px;
       }
 
       .section-title {
@@ -1132,17 +1308,41 @@
       .section-description {
         max-width: 330px;
         margin-top: 13px;
+
         text-align: left;
         font-size: .85rem;
       }
 
-      .archive-section {
-        padding-bottom: 80px;
+      /*
+        Track TIDAK bisa di-swipe horizontal.
+
+        Vertical swipe tetap diteruskan kepada halaman.
+      */
+
+      .archive-viewport {
+        overflow: hidden;
       }
 
-      .archive-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 14px;
+      .archive-track {
+        gap: 12px;
+
+        padding-left: var(--page-padding);
+        padding-right: var(--page-padding);
+
+        height: 100%;
+      }
+
+      /*
+        Satu kartu mengambil sebagian besar lebar HP.
+        Karena ada 6 kartu, akan terbentuk jarak horizontal
+        yang cukup panjang untuk dikontrol vertical scroll.
+      */
+
+      .archive-card {
+        flex: 0 0 78vw;
+        max-width: 330px;
+
+        height: 100%;
       }
 
       .archive-image-frame {
@@ -1189,6 +1389,7 @@
     ========================================= */
 
     @media (max-width: 360px) {
+
       :root {
         --page-padding: 15px;
       }
@@ -1213,6 +1414,10 @@
         font-size: .82rem;
       }
 
+      .archive-card {
+        flex-basis: 82vw;
+      }
+
       .footer-note {
         max-width: 175px;
       }
@@ -1224,6 +1429,7 @@
     ========================================= */
 
     @media (hover: none), (pointer: coarse) {
+
       .bento-card,
       .archive-card {
         transform: none !important;
@@ -1237,6 +1443,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
@@ -1259,42 +1466,72 @@
   </style>
 </head>
 
+
 <body id="top">
 
   <div class="page-shell">
+
 
     <!-- =====================================
          HEADER
     ====================================== -->
 
     <header class="site-header">
+
       <div class="container site-header-inner">
 
-        <a class="identity" href="#top" aria-label="Rofi Ali Majid, kembali ke atas">
-          <h1 class="site-wordmark">Rofi Ali Majid</h1>
-          <p class="site-tagline">writing for meaning</p>
+        <a
+          class="identity"
+          href="#top"
+          aria-label="Rofi Ali Majid, kembali ke atas">
+
+          <h1 class="site-wordmark">
+            Rofi Ali Majid
+          </h1>
+
+          <p class="site-tagline">
+            writing for meaning
+          </p>
+
         </a>
 
         <div class="header-right">
-          <span class="header-note">Penulis</span>
 
-          <a class="header-link" href="#archive">
+          <span class="header-note">
+            Penulis
+          </span>
+
+          <a
+            class="header-link"
+            href="#archive">
+
             jelajahi tulisan
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7 17 17 7M7 7h10v10"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true">
+
+              <path
+                d="M7 17 17 7M7 7h10v10"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
             </svg>
+
           </a>
+
         </div>
 
       </div>
+
     </header>
 
 
     <main>
+
 
       <!-- =====================================
            INTRODUCTION
@@ -1306,9 +1543,9 @@
 
           <div class="intro-copy reveal">
 
-            <span class="eyebrow">Himpunan tulisan · 2026</span>
-
-          
+            <span class="eyebrow">
+              Himpunan tulisan · 2026
+            </span>
 
             <p class="intro-description">
               Kumpulan tulisan tentang sejarah, sains, teknologi,
@@ -1318,10 +1555,14 @@
 
           </div>
 
-          <aside class="intro-aside reveal reveal-delay-1"
-                 aria-label="Jumlah tulisan unggulan">
 
-            <span class="intro-aside-number">09</span>
+          <aside
+            class="intro-aside reveal reveal-delay-1"
+            aria-label="Jumlah tulisan unggulan">
+
+            <span class="intro-aside-number">
+              09
+            </span>
 
             <span class="intro-aside-label">
               Artikel<br>
@@ -1332,6 +1573,7 @@
 
         </div>
 
+
         <div class="intro-bottom reveal reveal-delay-2">
 
           <span class="intro-bottom-label">
@@ -1339,8 +1581,14 @@
           </span>
 
           <span class="intro-bottom-right">
-            <span class="status-dot" aria-hidden="true"></span>
+
+            <span
+              class="status-dot"
+              aria-hidden="true">
+            </span>
+
             Arsip Pribadi
+
           </span>
 
         </div>
@@ -1352,8 +1600,9 @@
            FEATURED BENTO GRID
       ====================================== -->
 
-      <section class="container featured-section"
-               aria-label="Tulisan pilihan">
+      <section
+        class="container featured-section"
+        aria-label="Tulisan pilihan">
 
         <div class="bento-grid">
 
@@ -1368,11 +1617,13 @@
             aria-label="Baca Gebrakan Berani Menkeu Samsi Sastrawidagda yang Menjabat 38 Hari">
 
             <div class="card-media">
+
               <img
                 class="card-image"
                 src="https://mmc.tirto.id/image/otf/1240x0/2026/09/24/header-mozaik---samsi-sastrawidagda---menkeu-ri-pertama---fad_ratio-16x9.jpg"
                 alt="Ilustrasi Samsi Sastrawidagda"
                 fetchpriority="high">
+
             </div>
 
             <div class="card-overlay"></div>
@@ -1380,9 +1631,17 @@
             <div class="card-content">
 
               <div class="card-meta">
-                <span>History</span>
+
+                <span>
+                  History
+                </span>
+
                 <span class="separator"></span>
-                <span>Featured story</span>
+
+                <span>
+                  Featured story
+                </span>
+
               </div>
 
               <h3 class="card-title">
@@ -1395,17 +1654,30 @@
               </p>
 
               <div class="card-footer">
-                <span class="card-link-label">Read the story</span>
 
-                <span class="card-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
-                          stroke="currentColor"
-                          stroke-width="1.7"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                  </svg>
+                <span class="card-link-label">
+                  Read the story
                 </span>
+
+                <span
+                  class="card-arrow"
+                  aria-hidden="true">
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                      d="M7 17 17 7M7 7h10v10"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                  </svg>
+
+                </span>
+
               </div>
 
             </div>
@@ -1423,11 +1695,13 @@
             aria-label="Baca Membaca Letusan dan Tsunami Krakatau 1883 dari Ingatan Korban">
 
             <div class="card-media">
+
               <img
                 class="card-image"
                 src="https://mmc.tirto.id/image/otf/1240x0/2026/09/14/letusan-krakatau-1883--3_ratio-16x9.jpg"
                 alt="Ilustrasi letusan Krakatau 1883"
                 loading="lazy">
+
             </div>
 
             <div class="card-overlay"></div>
@@ -1435,9 +1709,17 @@
             <div class="card-content">
 
               <div class="card-meta">
-                <span>History</span>
+
+                <span>
+                  History
+                </span>
+
                 <span class="separator"></span>
-                <span>01</span>
+
+                <span>
+                  01
+                </span>
+
               </div>
 
               <h3 class="card-title">
@@ -1445,17 +1727,30 @@
               </h3>
 
               <div class="card-footer">
-                <span class="card-link-label">Read the story</span>
 
-                <span class="card-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
-                          stroke="currentColor"
-                          stroke-width="1.7"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                  </svg>
+                <span class="card-link-label">
+                  Read the story
                 </span>
+
+                <span
+                  class="card-arrow"
+                  aria-hidden="true">
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                      d="M7 17 17 7M7 7h10v10"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                  </svg>
+
+                </span>
+
               </div>
 
             </div>
@@ -1473,11 +1768,13 @@
             aria-label="Baca Ketika Arca Palsu dari Solo Gemparkan Belanda">
 
             <div class="card-media">
+
               <img
                 class="card-image"
                 src="https://mmc.tirto.id/image/otf/1240x0/2026/05/24/header-mozaik-arca-palsu--fad_01_ratio-16x9.jpg"
                 alt="Ilustrasi arca palsu dari Solo"
                 loading="lazy">
+
             </div>
 
             <div class="card-overlay"></div>
@@ -1485,9 +1782,17 @@
             <div class="card-content">
 
               <div class="card-meta">
-                <span>Culture</span>
+
+                <span>
+                  Culture
+                </span>
+
                 <span class="separator"></span>
-                <span>02</span>
+
+                <span>
+                  02
+                </span>
+
               </div>
 
               <h3 class="card-title">
@@ -1495,17 +1800,30 @@
               </h3>
 
               <div class="card-footer">
-                <span class="card-link-label">Read the story</span>
 
-                <span class="card-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
-                          stroke="currentColor"
-                          stroke-width="1.7"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                  </svg>
+                <span class="card-link-label">
+                  Read the story
                 </span>
+
+                <span
+                  class="card-arrow"
+                  aria-hidden="true">
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                      d="M7 17 17 7M7 7h10v10"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                  </svg>
+
+                </span>
+
               </div>
 
             </div>
@@ -1519,348 +1837,549 @@
 
       <!-- =====================================
            WRITING ARCHIVE
+           HORIZONTAL SCROLL VERSION
       ====================================== -->
 
-      <section class="container archive-section"
-               id="archive"
-               aria-labelledby="archive-title">
+      <section
+        class="archive-section"
+        id="archive"
+        aria-labelledby="archive-title">
 
-        <div class="section-heading reveal">
 
-          <div>
-            <span class="eyebrow">Arsip tulisan</span>
+        <!--
+          archive-pin:
 
-            <h2 class="section-title" id="archive-title">
-              Jelajahi lainnya...
-            </h2>
+          Bagian ini akan tetap berada di viewport
+          ketika pengguna melakukan vertical scroll.
+        -->
+
+        <div class="archive-pin">
+
+
+          <!-- ARCHIVE HEADING -->
+
+          <div class="archive-heading-wrap">
+
+            <div class="container section-heading reveal">
+
+              <div>
+
+                <span class="eyebrow">
+                  Arsip tulisan
+                </span>
+
+                <h2
+                  class="section-title"
+                  id="archive-title">
+
+                  Jelajahi lainnya...
+
+                </h2>
+
+              </div>
+
+              <p class="section-description">
+                Tulisan lain tentang sains, teknologi, sejarah,
+                hiburan, dan fenomena di sekitar kita.
+              </p>
+
+            </div>
+
           </div>
 
-          <p class="section-description">
-            Tulisan lain tentang sains, teknologi, sejarah,
-            hiburan, dan fenomena di sekitar kita.
-          </p>
 
-        </div>
+          <!--
+            ARCHIVE VIEWPORT
+
+            Kartu berada di dalam satu baris.
+            Tidak ada vertical movement pada track.
+          -->
+
+          <div class="archive-viewport">
+
+            <div class="archive-track">
 
 
-        <div class="archive-grid">
+              <!-- =================================
+                   ARTICLE 04: HOBI BATU
+              ================================== -->
 
+              <a
+                class="archive-card reveal"
+                href="https://tirto.id/di-balik-tren-hobi-memelihara-batu-hBjS"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Di Balik Tren Hobi Memelihara Batu">
 
-          <!-- ARTICLE 04: HOBI BATU -->
+                <div class="archive-image-frame">
 
-          <a
-            class="archive-card reveal"
-            href="https://tirto.id/di-balik-tren-hobi-memelihara-batu-hBjS"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Di Balik Tren Hobi Memelihara Batu">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/08/18/ilustrasi-hobi-memelihara-batu_01_ratio-16x9.jpg"
+                    alt="Ilustrasi hobi memelihara batu"
+                    loading="lazy">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/08/18/ilustrasi-hobi-memelihara-batu_01_ratio-16x9.jpg"
-                alt="Ilustrasi hobi memelihara batu"
-                loading="lazy">
-            </div>
+                </div>
 
-            <div class="archive-copy">
+                <div class="archive-copy">
 
-              <div class="archive-meta">
-                <span>Society</span>
-                <span>·</span>
-                <span>03</span>
-              </div>
+                  <div class="archive-meta">
 
-              <h3 class="archive-title">
-                Di Balik Tren Hobi Memelihara Batu
-              </h3>
+                    <span>
+                      Society
+                    </span>
 
-              <p class="archive-description">
-                Menelusuri tren hobi memelihara batu dan alasan di baliknya.
-              </p>
+                    <span>
+                      ·
+                    </span>
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      03
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                  </div>
+
+                  <h3 class="archive-title">
+                    Di Balik Tren Hobi Memelihara Batu
+                  </h3>
+
+                  <p class="archive-description">
+                    Menelusuri tren hobi memelihara batu dan alasan di baliknya.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
 
-            </div>
+                      </svg>
 
-          </a>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
 
 
-          <!-- ARTICLE 05: GIGANTOPITHECUS -->
+              <!-- =================================
+                   ARTICLE 05: GIGANTOPITHECUS
+              ================================== -->
 
-          <a
-            class="archive-card reveal reveal-delay-1"
-            href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Gigantopithecus: Kera Terbesar di Bumi">
+              <a
+                class="archive-card reveal reveal-delay-1"
+                href="https://tirto.id/gigantopithecus-king-kong-purba-jawa-kera-terbesar-di-bumi-hBLW"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Gigantopithecus: Kera Terbesar di Bumi">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg"
-                alt="Ilustrasi Gigantopithecus"
-                loading="lazy">
-            </div>
+                <div class="archive-image-frame">
 
-            <div class="archive-copy">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/09/03/gigantopithecus--3_ratio-16x9.jpg"
+                    alt="Ilustrasi Gigantopithecus"
+                    loading="lazy">
 
-              <div class="archive-meta">
-                <span>Science</span>
-                <span>·</span>
-                <span>04</span>
-              </div>
+                </div>
 
-              <h3 class="archive-title">
-                Gigantopithecus: Kera Terbesar di Bumi
-              </h3>
+                <div class="archive-copy">
 
-              <p class="archive-description">
-                Menelusuri jejak Gigantopithecus, kera raksasa
-                yang pernah hidup di Asia.
-              </p>
+                  <div class="archive-meta">
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      Science
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                    <span>
+                      ·
+                    </span>
+
+                    <span>
+                      04
+                    </span>
+
+                  </div>
+
+                  <h3 class="archive-title">
+                    Gigantopithecus: Kera Terbesar di Bumi
+                  </h3>
+
+                  <p class="archive-description">
+                    Menelusuri jejak Gigantopithecus, kera raksasa
+                    yang pernah hidup di Asia.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
 
-            </div>
+                      </svg>
 
-          </a>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
 
 
-          <!-- ARTICLE 06: DRONE SWARM -->
+              <!-- =================================
+                   ARTICLE 06: DRONE SWARM
+              ================================== -->
 
-          <a
-            class="archive-card reveal reveal-delay-2"
-            href="https://tirto.id/drone-swarm-mengapa-ukraina-jadi-laboratorium-ai-perang-militer-terbaik-hDhJ"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Drone Swarm: Mengapa Ukraina jadi Lab AI Militer Terbaik?">
+              <a
+                class="archive-card reveal reveal-delay-2"
+                href="https://tirto.id/drone-swarm-mengapa-ukraina-jadi-laboratorium-ai-perang-militer-terbaik-hDhJ"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Drone Swarm: Mengapa Ukraina jadi Lab AI Militer Terbaik?">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/09/28/istock-638714640_ratio-16x9.jpg"
-                alt="Ilustrasi drone swarm"
-                loading="lazy">
-            </div>
+                <div class="archive-image-frame">
 
-            <div class="archive-copy">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/09/28/istock-638714640_ratio-16x9.jpg"
+                    alt="Ilustrasi drone swarm"
+                    loading="lazy">
 
-              <div class="archive-meta">
-                <span>Technology</span>
-                <span>·</span>
-                <span>05</span>
-              </div>
+                </div>
 
-              <h3 class="archive-title">
-                Drone Swarm: Mengapa Ukraina jadi Lab AI Militer Terbaik?
-              </h3>
+                <div class="archive-copy">
 
-              <p class="archive-description">
-                Menelaah perkembangan drone swarm dan pemanfaatan
-                kecerdasan buatan di medan perang.
-              </p>
+                  <div class="archive-meta">
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      Technology
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                    <span>
+                      ·
+                    </span>
+
+                    <span>
+                      05
+                    </span>
+
+                  </div>
+
+                  <h3 class="archive-title">
+                    Drone Swarm: Mengapa Ukraina jadi Lab AI Militer Terbaik?
+                  </h3>
+
+                  <p class="archive-description">
+                    Drone swarm dan AI Militer di medan perang.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
 
-            </div>
+                      </svg>
 
-          </a>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
 
 
-          <!-- ARTICLE 07: NASA -->
+              <!-- =================================
+                   ARTICLE 07: NASA
+              ================================== -->
 
-          <a
-            class="archive-card reveal"
-            href="https://tirto.id/teleskop-mutakhir-nasa-ambisi-temukan-100-ribu-planet-baru-hB9L"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru">
+              <a
+                class="archive-card reveal"
+                href="https://tirto.id/teleskop-mutakhir-nasa-ambisi-temukan-100-ribu-planet-baru-hB9L"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/09/04/ksc-20260626-ph-ser01_0007large_ratio-16x9.jpg"
-                alt="Teleskop mutakhir NASA"
-                loading="lazy">
-            </div>
+                <div class="archive-image-frame">
 
-            <div class="archive-copy">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/09/04/ksc-20260626-ph-ser01_0007large_ratio-16x9.jpg"
+                    alt="Teleskop mutakhir NASA"
+                    loading="lazy">
 
-              <div class="archive-meta">
-                <span>Space</span>
-                <span>·</span>
-                <span>06</span>
-              </div>
+                </div>
 
-              <h3 class="archive-title">
-                Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru
-              </h3>
+                <div class="archive-copy">
 
-              <p class="archive-description">
-                Membahas teleskop mutakhir NASA dan ambisi
-                menemukan planet-planet baru.
-              </p>
+                  <div class="archive-meta">
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      Space
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                    <span>
+                      ·
+                    </span>
+
+                    <span>
+                      06
+                    </span>
+
+                  </div>
+
+                  <h3 class="archive-title">
+                    Teleskop Mutakhir NASA: Ambisi Temukan 100 Ribu Planet Baru
+                  </h3>
+
+                  <p class="archive-description">
+                    Ambisi NASA temukan planet-planet baru.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
 
-            </div>
+                      </svg>
 
-          </a>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
 
 
-          <!-- ARTICLE 08: AVENGERS -->
+              <!-- =================================
+                   ARTICLE 08: AVENGERS
+              ================================== -->
 
-          <a
-            class="archive-card reveal reveal-delay-1"
-            href="https://tirto.id/avengers-the-kang-dynasty-yang-dirombak-jadi-avengers-doomsday-hDjM"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Nasib Avengers: The Kang Dynasty">
+              <a
+                class="archive-card reveal reveal-delay-1"
+                href="https://tirto.id/avengers-the-kang-dynasty-yang-dirombak-jadi-avengers-doomsday-hDjM"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Nasib Avengers: The Kang Dynasty">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/09/28/avengers-the-kang-dynasty_ratio-16x9.jpg"
-                alt="Ilustrasi Avengers: The Kang Dynasty"
-                loading="lazy">
-            </div>
+                <div class="archive-image-frame">
 
-            <div class="archive-copy">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/09/28/avengers-the-kang-dynasty_ratio-16x9.jpg"
+                    alt="Ilustrasi Avengers: The Kang Dynasty"
+                    loading="lazy">
 
-              <div class="archive-meta">
-                <span>Pop Culture</span>
-                <span>·</span>
-                <span>07</span>
-              </div>
+                </div>
 
-              <h3 class="archive-title">
-                Nasib Avengers: The Kang Dynasty
-              </h3>
+                <div class="archive-copy">
 
-              <p class="archive-description">
-                Menelusuri perubahan proyek film Avengers:
-                The Kang Dynasty menjadi Avengers: Doomsday.
-              </p>
+                  <div class="archive-meta">
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      Pop Culture
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                    <span>
+                      ·
+                    </span>
+
+                    <span>
+                      07
+                    </span>
+
+                  </div>
+
+                  <h3 class="archive-title">
+                    Nasib Avengers: The Kang Dynasty
+                  </h3>
+
+                  <p class="archive-description">
+                    Menelusuri perubahan proyek film Avengers:
+                    The Kang Dynasty menjadi Avengers: Doomsday.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
 
-            </div>
+                      </svg>
 
-          </a>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
 
 
-          <!-- ARTICLE 09: MIKRO DRACIN -->
+              <!-- =================================
+                   ARTICLE 09: MIKRO DRACIN
+              ================================== -->
 
-          <a
-            class="archive-card reveal reveal-delay-2"
-            href="https://tirto.id/nestapa-di-balik-mikro-dracin-penulis-diplagiat-aktor-dipecat-hzZP"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Baca Nestapa di Balik Mikro Dracin">
+              <a
+                class="archive-card reveal reveal-delay-2"
+                href="https://tirto.id/nestapa-di-balik-mikro-dracin-penulis-diplagiat-aktor-dipecat-hzZP"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baca Nestapa di Balik Mikro Dracin">
 
-            <div class="archive-image-frame">
-              <img
-                class="archive-image"
-                src="https://mmc.tirto.id/image/otf/1240x0/2026/07/21/zhang-xiaoley_ratio-16x9.jpg"
-                alt="Zhang Xiaoley"
-                loading="lazy">
-            </div>
+                <div class="archive-image-frame">
 
-            <div class="archive-copy">
+                  <img
+                    class="archive-image"
+                    src="https://mmc.tirto.id/image/otf/1240x0/2026/07/21/zhang-xiaoley_ratio-16x9.jpg"
+                    alt="Zhang Xiaoley"
+                    loading="lazy">
 
-              <div class="archive-meta">
-                <span>Entertainment</span>
-                <span>·</span>
-                <span>08</span>
-              </div>
+                </div>
 
-              <h3 class="archive-title">
-                Nestapa di Balik Mikro Dracin
-              </h3>
+                <div class="archive-copy">
 
-              <p class="archive-description">
-                Membahas kasus plagiarisme penulis dalam
-                industri mikrodrama China.
-              </p>
+                  <div class="archive-meta">
 
-              <div class="archive-footer">
-                <span class="archive-read">Read article</span>
+                    <span>
+                      Entertainment
+                    </span>
 
-                <span class="archive-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 17 17 7M7 7h10v10"
+                    <span>
+                      ·
+                    </span>
+
+                    <span>
+                      08
+                    </span>
+
+                  </div>
+
+                  <h3 class="archive-title">
+                    Nestapa di Balik Mikro Dracin
+                  </h3>
+
+                  <p class="archive-description">
+                    Kasus plagiarisme penulis dan dampak AI di
+                    industri mikrodrama China.
+                  </p>
+
+                  <div class="archive-footer">
+
+                    <span class="archive-read">
+                      Read article
+                    </span>
+
+                    <span
+                      class="archive-arrow"
+                      aria-hidden="true">
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                          d="M7 17 17 7M7 7h10v10"
                           stroke="currentColor"
                           stroke-width="1.6"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </div>
+
+                      </svg>
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </a>
+
 
             </div>
 
-          </a>
+          </div>
 
         </div>
 
@@ -1878,23 +2397,37 @@
       <div class="container footer-inner">
 
         <div>
-          <div class="footer-brand">Rofi Ali Majid</div>
+
+          <div class="footer-brand">
+            Rofi Ali Majid
+          </div>
 
           <p class="footer-note">
             Words, ideas, and the stories in between.
           </p>
+
         </div>
 
-        <a class="footer-top" href="#top">
+        <a
+          class="footer-top"
+          href="#top">
+
           Balik ke atas
 
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 19V5m-7 7 7-7 7 7"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"/>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true">
+
+            <path
+              d="M12 19V5m-7 7 7-7 7 7"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+
           </svg>
+
         </a>
 
       </div>
@@ -1910,155 +2443,715 @@
 
   <script>
     (() => {
+
       "use strict";
+
+
+      /* =====================================
+         REDUCED MOTION
+      ====================================== */
 
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
+
+      /* =====================================
+         POINTER DETECTION
+      ====================================== */
+
       const finePointer = window.matchMedia(
         "(hover: hover) and (pointer: fine)"
       ).matches;
+
+
+      /* =====================================
+         EXISTING CARD INTERACTION
+      ====================================== */
 
       const cards = document.querySelectorAll(
         ".bento-card, .archive-card"
       );
 
-      /*
-       * 1. REVEAL ON SCROLL
-       */
 
-      const revealElements = document.querySelectorAll(".reveal");
+      /* =====================================
+         01. REVEAL ON SCROLL
+      ====================================== */
 
-      if ("IntersectionObserver" in window && !reducedMotion) {
-        document.documentElement.classList.add("js-ready");
+      const revealElements =
+        document.querySelectorAll(".reveal");
 
-        const revealObserver = new IntersectionObserver(
-          (entries, observer) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("is-visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          {
-            threshold: 0.08,
-            rootMargin: "0px 0px -35px 0px"
-          }
+
+      if (
+        "IntersectionObserver" in window &&
+        !reducedMotion
+      ) {
+
+        document.documentElement.classList.add(
+          "js-ready"
         );
+
+
+        const revealObserver =
+          new IntersectionObserver(
+            (entries, observer) => {
+
+              entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                  entry.target.classList.add(
+                    "is-visible"
+                  );
+
+                  observer.unobserve(
+                    entry.target
+                  );
+
+                }
+
+              });
+
+            },
+            {
+              threshold: 0.08,
+              rootMargin: "0px 0px -35px 0px"
+            }
+          );
+
 
         revealElements.forEach((element) => {
-          revealObserver.observe(element);
+
+          revealObserver.observe(
+            element
+          );
+
         });
+
       }
 
 
-      /*
-       * 2. INTERACTIVE 3D TILT
-       *
-       * Efek hanya berjalan pada perangkat
-       * dengan pointer presisi seperti mouse.
-       */
+      /* =====================================
+         02. INTERACTIVE 3D TILT
+      ====================================== */
 
-      if (finePointer && !reducedMotion) {
+      if (
+        finePointer &&
+        !reducedMotion
+      ) {
+
         cards.forEach((card) => {
+
           let frame = null;
 
-          const maxRotation = card.classList.contains("bento-card")
-            ? 3.5
-            : 2.5;
+
+          const maxRotation =
+            card.classList.contains("bento-card")
+              ? 3.5
+              : 2.5;
+
 
           function handlePointerMove(event) {
-            const rect = card.getBoundingClientRect();
 
-            const x = (event.clientX - rect.left) / rect.width;
-            const y = (event.clientY - rect.top) / rect.height;
+            const rect =
+              card.getBoundingClientRect();
 
-            const rotateY = (x - 0.5) * maxRotation * 2;
-            const rotateX = (0.5 - y) * maxRotation * 2;
+
+            const x =
+              (event.clientX - rect.left) /
+              rect.width;
+
+
+            const y =
+              (event.clientY - rect.top) /
+              rect.height;
+
+
+            const rotateY =
+              (x - 0.5) *
+              maxRotation *
+              2;
+
+
+            const rotateX =
+              (0.5 - y) *
+              maxRotation *
+              2;
+
 
             if (frame) {
-              cancelAnimationFrame(frame);
+
+              cancelAnimationFrame(
+                frame
+              );
+
             }
 
-            frame = requestAnimationFrame(() => {
-              card.style.setProperty(
-                "--rx",
-                `${rotateX.toFixed(2)}deg`
-              );
 
-              card.style.setProperty(
-                "--ry",
-                `${rotateY.toFixed(2)}deg`
-              );
-            });
+            frame =
+              requestAnimationFrame(() => {
+
+                card.style.setProperty(
+                  "--rx",
+                  `${rotateX.toFixed(2)}deg`
+                );
+
+                card.style.setProperty(
+                  "--ry",
+                  `${rotateY.toFixed(2)}deg`
+                );
+
+              });
+
           }
+
 
           function resetCard() {
+
             if (frame) {
-              cancelAnimationFrame(frame);
+
+              cancelAnimationFrame(
+                frame
+              );
+
               frame = null;
+
             }
 
-            card.style.setProperty("--rx", "0deg");
-            card.style.setProperty("--ry", "0deg");
+
+            card.style.setProperty(
+              "--rx",
+              "0deg"
+            );
+
+            card.style.setProperty(
+              "--ry",
+              "0deg"
+            );
+
           }
 
-          card.addEventListener("pointermove", handlePointerMove);
-          card.addEventListener("pointerleave", resetCard);
-          card.addEventListener("blur", resetCard);
+
+          card.addEventListener(
+            "pointermove",
+            handlePointerMove
+          );
+
+
+          card.addEventListener(
+            "pointerleave",
+            resetCard
+          );
+
+
+          card.addEventListener(
+            "blur",
+            resetCard
+          );
+
         });
+
       }
 
 
-      /*
-       * 3. SUBTLE PARALLAX
-       *
-       * Foto bergeser sedikit saat pointer bergerak.
-       * Efek tidak berjalan pada layar sentuh.
-       */
+      /* =====================================
+         03. SUBTLE PARALLAX
+      ====================================== */
 
-      if (finePointer && !reducedMotion) {
-        const mediaCards = document.querySelectorAll(
-          ".bento-card"
-        );
+      if (
+        finePointer &&
+        !reducedMotion
+      ) {
+
+        const mediaCards =
+          document.querySelectorAll(
+            ".bento-card"
+          );
+
 
         mediaCards.forEach((card) => {
-          const image = card.querySelector(".card-image");
 
-          if (!image) return;
+          const image =
+            card.querySelector(
+              ".card-image"
+            );
+
+
+          if (!image) {
+            return;
+          }
+
 
           let frame = null;
 
-          card.addEventListener("pointermove", (event) => {
-            const rect = card.getBoundingClientRect();
 
-            const x = (event.clientX - rect.left) / rect.width;
-            const y = (event.clientY - rect.top) / rect.height;
+          card.addEventListener(
+            "pointermove",
+            (event) => {
 
-            const moveX = (x - 0.5) * -9;
-            const moveY = (y - 0.5) * -9;
+              const rect =
+                card.getBoundingClientRect();
 
-            if (frame) {
-              cancelAnimationFrame(frame);
+
+              const x =
+                (event.clientX - rect.left) /
+                rect.width;
+
+
+              const y =
+                (event.clientY - rect.top) /
+                rect.height;
+
+
+              const moveX =
+                (x - 0.5) * -9;
+
+
+              const moveY =
+                (y - 0.5) * -9;
+
+
+              if (frame) {
+
+                cancelAnimationFrame(
+                  frame
+                );
+
+              }
+
+
+              frame =
+                requestAnimationFrame(() => {
+
+                  image.style.transform =
+                    `scale(1.075) translate(${moveX}px, ${moveY}px)`;
+
+                });
+
             }
+          );
 
-            frame = requestAnimationFrame(() => {
-              image.style.transform =
-                `scale(1.075) translate(${moveX}px, ${moveY}px)`;
-            });
-          });
 
-          card.addEventListener("pointerleave", () => {
-            if (frame) {
-              cancelAnimationFrame(frame);
-              frame = null;
+          card.addEventListener(
+            "pointerleave",
+            () => {
+
+              if (frame) {
+
+                cancelAnimationFrame(
+                  frame
+                );
+
+                frame = null;
+
+              }
+
+
+              image.style.transform = "";
+
             }
+          );
 
-            image.style.transform = "";
-          });
         });
+
+      }
+
+
+      /* =====================================
+         04. HORIZONTAL ARCHIVE SCROLL
+      ====================================== */
+
+      const archiveSection =
+        document.querySelector(
+          ".archive-section"
+        );
+
+
+      const archivePin =
+        document.querySelector(
+          ".archive-pin"
+        );
+
+
+      const archiveViewport =
+        document.querySelector(
+          ".archive-viewport"
+        );
+
+
+      const archiveTrack =
+        document.querySelector(
+          ".archive-track"
+        );
+
+
+      const siteHeader =
+        document.querySelector(
+          ".site-header"
+        );
+
+
+      /*
+        Jika elemen archive tidak ditemukan,
+        script horizontal tidak dijalankan.
+      */
+
+      if (
+        archiveSection &&
+        archivePin &&
+        archiveViewport &&
+        archiveTrack
+      ) {
+
+
+        let archiveStart = 0;
+        let archiveDistance = 0;
+
+        let ticking = false;
+
+
+        /* -------------------------------------
+           CLAMP
+        ------------------------------------- */
+
+        function clamp(
+          value,
+          min,
+          max
+        ) {
+
+          return Math.max(
+            min,
+            Math.min(
+              max,
+              value
+            )
+          );
+
+        }
+
+
+        /* -------------------------------------
+           HEADER HEIGHT
+        ------------------------------------- */
+
+        function updateHeaderHeight() {
+
+          const height =
+            siteHeader
+              ? siteHeader.getBoundingClientRect().height
+              : 0;
+
+
+          document.documentElement.style.setProperty(
+            "--header-height",
+            `${height}px`
+          );
+
+
+          return height;
+
+        }
+
+
+        /* -------------------------------------
+           CALCULATE METRICS
+        ------------------------------------- */
+
+        function updateArchiveMetrics() {
+
+          const headerHeight =
+            updateHeaderHeight();
+
+
+          /*
+            Posisi archive-section dalam
+            keseluruhan dokumen.
+          */
+
+          const sectionTop =
+            window.scrollY +
+            archiveSection.getBoundingClientRect().top;
+
+
+          /*
+            Tinggi area sticky.
+          */
+
+          const pinHeight =
+            archivePin.getBoundingClientRect().height;
+
+
+          /*
+            Lebar viewport katalog.
+          */
+
+          const viewportWidth =
+            archiveViewport.getBoundingClientRect().width;
+
+
+          /*
+            Lebar seluruh kartu.
+          */
+
+          const trackWidth =
+            archiveTrack.scrollWidth;
+
+
+          /*
+            Total gerakan horizontal.
+          */
+
+          archiveDistance =
+            Math.max(
+              0,
+              trackWidth - viewportWidth
+            );
+
+
+          /*
+            Section dibuat panjang.
+
+            Misalnya:
+            sticky area = 700px
+            horizontal distance = 1500px
+
+            maka section = 2200px.
+
+            700px pertama digunakan untuk sticky area,
+            sisanya menjadi ruang untuk menggerakkan
+            kartu secara horizontal.
+          */
+
+          archiveSection.style.height =
+            `${Math.ceil(
+              pinHeight +
+              archiveDistance
+            )}px`;
+
+
+          /*
+            Sticky mulai ketika section mencapai
+            bagian bawah header.
+          */
+
+          archiveStart =
+            sectionTop -
+            headerHeight;
+
+
+          renderArchive();
+
+        }
+
+
+        /* -------------------------------------
+           RENDER HORIZONTAL POSITION
+        ------------------------------------- */
+
+        function renderArchive() {
+
+          const currentScroll =
+            window.scrollY;
+
+
+          let progress = 0;
+
+
+          if (
+            archiveDistance > 0
+          ) {
+
+            progress =
+              (
+                currentScroll -
+                archiveStart
+              ) /
+              archiveDistance;
+
+
+            progress =
+              clamp(
+                progress,
+                0,
+                1
+              );
+
+          }
+
+
+          /*
+            Convert vertical scroll progress
+            menjadi horizontal position.
+
+            X bergerak.
+            Y SELALU 0.
+
+            Inilah bagian yang mencegah
+            gerakan diagonal.
+          */
+
+          const x =
+            -(
+              archiveDistance *
+              progress
+            );
+
+
+          const transform =
+            `translate3d(${x}px, 0, 0)`;
+
+
+          archiveTrack.style.transform =
+            transform;
+
+
+          archiveTrack.style.webkitTransform =
+            transform;
+
+        }
+
+
+        /* -------------------------------------
+           SCROLL
+        ------------------------------------- */
+
+        function requestArchiveRender() {
+
+          if (ticking) {
+            return;
+          }
+
+
+          ticking = true;
+
+
+          requestAnimationFrame(() => {
+
+            renderArchive();
+
+            ticking = false;
+
+          });
+
+        }
+
+
+        window.addEventListener(
+          "scroll",
+          requestArchiveRender,
+          {
+            passive: true
+          }
+        );
+
+
+        /* -------------------------------------
+           RESIZE
+        ------------------------------------- */
+
+        window.addEventListener(
+          "resize",
+          () => {
+
+            updateArchiveMetrics();
+
+          }
+        );
+
+
+        /* -------------------------------------
+           ORIENTATION CHANGE
+        ------------------------------------- */
+
+        window.addEventListener(
+          "orientationchange",
+          () => {
+
+            setTimeout(
+              updateArchiveMetrics,
+              200
+            );
+
+          }
+        );
+
+
+        /* -------------------------------------
+           IOS SAFARI VISUAL VIEWPORT
+        ------------------------------------- */
+
+        if (
+          window.visualViewport
+        ) {
+
+          window.visualViewport.addEventListener(
+            "resize",
+            () => {
+
+              updateArchiveMetrics();
+
+            }
+          );
+
+        }
+
+
+        /* -------------------------------------
+           IMAGE LOAD
+        ------------------------------------- */
+
+        archiveTrack
+          .querySelectorAll("img")
+          .forEach((img) => {
+
+            if (
+              img.complete
+            ) {
+              return;
+            }
+
+
+            img.addEventListener(
+              "load",
+              updateArchiveMetrics,
+              {
+                once: true
+              }
+            );
+
+          });
+
+
+        /* -------------------------------------
+           INITIAL CALCULATION
+        ------------------------------------- */
+
+        updateArchiveMetrics();
+
+
+        requestAnimationFrame(() => {
+
+          updateArchiveMetrics();
+
+        });
+
+
+        window.addEventListener(
+          "load",
+          () => {
+
+            updateArchiveMetrics();
+
+
+            setTimeout(
+              updateArchiveMetrics,
+              250
+            );
+
+          }
+        );
+
       }
 
     })();
