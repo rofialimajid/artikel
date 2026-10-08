@@ -1529,7 +1529,259 @@
 
     </header>
 
+<!-- =========================================
+     LATEST ARTICLE TICKER
+     ========================================= -->
 
+<style>
+  .latest-ticker {
+    position: relative;
+    z-index: 90;
+    width: 100%;
+    height: 42px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: var(--charcoal-raised);
+  }
+
+  .latest-ticker-inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .latest-label {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: 0 0 auto;
+    height: 100%;
+    padding: 0 var(--page-padding);
+    padding-right: 18px;
+
+    color: var(--teal-bright);
+    background: var(--charcoal-raised);
+
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .latest-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: 50%;
+    background: var(--teal-bright);
+    box-shadow: 0 0 10px rgba(139, 190, 180, .45);
+  }
+
+  .ticker-window {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ticker-window::before,
+  .ticker-window::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    width: 55px;
+    pointer-events: none;
+  }
+
+  .ticker-window::before {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      var(--charcoal-raised),
+      transparent
+    );
+  }
+
+  .ticker-window::after {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      var(--charcoal-raised),
+      transparent
+    );
+  }
+
+  .ticker-track {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    min-width: max-content;
+    height: 100%;
+
+    animation: latestTicker 38s linear infinite;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 22px;
+
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: .78rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+
+    transition: color .25s ease;
+  }
+
+  .ticker-item:hover {
+    color: var(--teal-bright);
+  }
+
+  .ticker-separator {
+    color: var(--teal);
+    font-size: .72rem;
+    user-select: none;
+  }
+
+  @keyframes latestTicker {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .latest-ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 600px) {
+
+    .latest-ticker {
+      height: 38px;
+    }
+
+    .latest-label {
+      padding-left: 18px;
+      padding-right: 14px;
+      font-size: .58rem;
+      letter-spacing: .12em;
+    }
+
+    .latest-dot {
+      width: 5px;
+      height: 5px;
+      flex-basis: 5px;
+    }
+
+    .ticker-item {
+      padding: 0 17px;
+      font-size: .72rem;
+    }
+
+    .ticker-window::before,
+    .ticker-window::after {
+      width: 30px;
+    }
+
+    .ticker-track {
+      animation-duration: 32s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>
+
+<div class="latest-ticker" aria-label="Artikel terbaru">
+  <div class="latest-ticker-inner">
+
+    <div class="latest-label">
+      <span class="latest-dot"></span>
+      TERBARU
+    </div>
+
+    <div class="ticker-window">
+      <div class="ticker-track">
+
+        <!-- ARTIKEL 1 -->
+        <a
+          href="https://tirto.id/menteri-perminyakan-iran-mundur-di-tengah-konflik-hDA2"
+           class="ticker-item"
+        >
+          Misteri Mundurnya Menteri Perminyakan Iran di Tengah Konflik
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+        <!-- ARTIKEL 2 -->
+        <a
+          href="https://tirto.id/gejolak-aksi-ribuan-siswa-di-prancis-ratusan-sekolah-ditutup-hDz9"
+          class="ticker-item"
+        >
+         Gejolak Aksi Ribuan Siswa di Prancis & Ratusan Sekolah Ditutup
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+        <!-- ARTIKEL 3 -->
+        <a
+          href="https://tirto.id/riwayat-maskapai-flydubai-dan-jejak-insiden-yang-pernah-terjadi-hDw5"
+          class="ticker-item"
+        >
+          Riwayat Maskapai Flydubai dan Jejak Insiden yang Pernah Terjadi
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+        <!-- DUPLIKASI UNTUK LOOPING -->
+        <a
+          href="/artikel/judul-artikel-pertama.html"
+          class="ticker-item"
+        >
+           Misteri Mundurnya Menteri Perminyakan Iran di Tengah Konflik
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+        <a
+          href="/artikel/judul-artikel-kedua.html"
+          class="ticker-item"
+        >
+         Gejolak Aksi Ribuan Siswa di Prancis & Ratusan Sekolah Ditutup
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+        <a
+          href="/artikel/judul-artikel-ketiga.html"
+          class="ticker-item"
+        >
+         Riwayat Maskapai Flydubai dan Jejak Insiden yang Pernah Terjadi
+        </a>
+
+        <span class="ticker-separator">/</span>
+
+      </div>
+    </div>
+
+  </div>
+</div>
     <main>
 
 
